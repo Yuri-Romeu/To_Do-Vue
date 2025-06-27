@@ -14,11 +14,11 @@ const props = defineProps(['cadastraTarefa', 'tarefaTemp', 'trocarFiltro', 'edit
                          class="form-control"
                     />
                </div>
-               <div class="col-md-2">
+               <div class="col-md-2 mt-4 mt-md-0">
                     <button type="submit" class="btn btn-primary">Cadastrar</button>
                </div>
                <div class="col-md-2">
-                    <select @change="props.trocarFiltro" class="form-control">
+                    <select @change="props.trocarFiltro" class="form-control w-100 mt-4 mt-md-0">
                          <option value="todas">Todas tarefas</option>
                          <option value="pendentes">Pendentes</option>
                          <option value="finalizadas">Finalizadas</option>
@@ -27,3 +27,9 @@ const props = defineProps(['cadastraTarefa', 'tarefaTemp', 'trocarFiltro', 'edit
           </div>
      </form>
 </template>
+<style scoped>
+select,
+option {
+     cursor: pointer;
+}
+</style>

@@ -7,20 +7,8 @@ import ListaDeTarefas from './components/ListaDeTarefas.vue';
 const estado = reactive({
      tarefaTemp: '',
      filtro: 'todas',
-     tarefas: [
-          {
-               titulo: 'Estudar VueJs',
-               finalizada: false,
-          },
-          {
-               titulo: 'Estudar ES6',
-               finalizada: false,
-          },
-          {
-               titulo: 'Ir para a academia',
-               finalizada: true,
-          },
-     ],
+     tarefas: [],
+     tarefaDuplicada: false,
 });
 
 const getTarefasPendentes = () => {
@@ -45,12 +33,20 @@ const getTarefasFiltradas = () => {
 };
 
 const cadastraTarefa = () => {
+     const { tarefas, tarefaTemp } = estado;
+
      const tarefaNova = {
-          titulo: estado.tarefaTemp,
+          titulo: tarefaTemp,
           finalizada: false,
      };
-     estado.tarefas.push(tarefaNova);
-     estado.tarefaTemp = '';
+
+     if (tarefas.some(tarefa => tarefa.titulo === tarefaTemp)) {
+          estado.tarefaDuplicada = true;
+     } else {
+          estado.tarefas.push(tarefaNova);
+          estado.tarefaTemp = '';
+          estado.tarefaDuplicada = false;
+     }
 };
 </script>
 
@@ -63,6 +59,12 @@ const cadastraTarefa = () => {
                :edita-tarefa-temp="evento => (estado.tarefaTemp = evento.target.value)"
                :cadastra-tarefa="cadastraTarefa"
           />
-          <ListaDeTarefas :tarefas="getTarefasFiltradas()" />
+          <ListaDeTarefas
+               :tarefas="getTarefasFiltradas()"
+               :quantidade-tarefas="estado.tarefas.length"
+               :tarefa-duplicada="estado.tarefaDuplicada"
+               :fechar-alerta-duplicado="() => (estado.tarefaDuplicada = false)"
+               :tarefa-temp="estado.tarefaTemp"
+          />
      </div>
 </template>

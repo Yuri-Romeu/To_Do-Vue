@@ -1,9 +1,35 @@
 <script setup>
-const props = defineProps(['tarefas']);
+const props = defineProps([
+     'tarefaDuplicada',
+     'tarefas',
+     'quantidadeTarefas',
+     'fecharAlertaDuplicado',
+     'tarefaTemp',
+]);
 </script>
 <template>
      <ul class="list-group mt-4">
-          <li class="list-group-item" v-for="tarefa in props.tarefas">
+          <!-- Alertas segundo -->
+          <div
+               v-show="props.tarefaDuplicada"
+               class="alert alert-danger alert-dismissible fade show"
+               role="alert"
+          >
+               A tarefa <strong>{{ props.tarefaTemp }}</strong> já foi adicionada.
+               <button
+                    type="button"
+                    class="btn-close"
+                    aria-label="Close"
+                    @click="props.fecharAlertaDuplicado"
+               ></button>
+          </div>
+
+          <!-- Alertas primeiro -->
+          <div v-if="props.quantidadeTarefas === 0" class="alert alert-warning" role="alert">
+               Você ainda não possui nenhuma tarefa!
+          </div>
+
+          <li v-else class="list-group-item" v-for="tarefa in props.tarefas">
                <input
                     @change="evento => (tarefa.finalizada = evento.target.checked)"
                     :checked="tarefa.finalizada"
